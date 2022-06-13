@@ -1,4 +1,4 @@
-# pept_gui
+# pept_gui: A Graphical user interface for post processing of PEPT data
 
 [![codecov](https://codecov.io/gh/dwerner95/pept-GUI/branch/main/graph/badge.svg?token=pept-GUI_token_here)](https://codecov.io/gh/dwerner95/pept-GUI)
 [![CI](https://github.com/dwerner95/pept-GUI/actions/workflows/main.yml/badge.svg)](https://github.com/dwerner95/pept-GUI/actions/workflows/main.yml)
@@ -14,9 +14,7 @@ pip install pept_gui
 ## Usage
 
 ```bash
-$ python -m pept_gui
-#or
-$ pept_gui
+$ python3 -m pept_gui
 ```
 
 ## Development
