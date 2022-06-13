@@ -5,13 +5,13 @@ import pept
 import pept.tracking as tracking
 import time
 from PyQt5.uic import loadUi
-
+import os
 class Birmingham(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.parent = parent
-
-        loadUi("ui/birmingham.ui", self)
+        here = os.path.dirname(os.path.abspath(__file__))
+        loadUi(os.path.join(here,"..", "ui","birmingham.ui"), self)
         self.ok_button.clicked.connect(self.ok_button_clicked)
         self.cancel_button.clicked.connect(self.cancel_button_clicked)
         self.fopt.setText("0.2")

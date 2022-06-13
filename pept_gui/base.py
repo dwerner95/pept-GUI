@@ -175,8 +175,10 @@ class Window(QMainWindow, Ui_MainWindow):
                         f.write(f"    {self.pept_pipeline[module]['name']}('{self.pept_pipeline[module]['kwargs']['cond']}'),\n")
                     else:
                         f.write(f"    {self.pept_pipeline[module]['name']}(**{self.pept_pipeline[module]['kwargs']}),\n")
-                f.write("])\n")
-                f.write("pipeline.fit(lors)")
+                f.write("tracking.Stack(),])\n")
+                f.write("points = pipeline.fit(lors)\n")
+                f.write("# Save points after this!")
+            QMessageBox.information(self, "Success", f"Script saved to {file_name[0]}\n Please edit the script to save the positions!")
 
 
 
