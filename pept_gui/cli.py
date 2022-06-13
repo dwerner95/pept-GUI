@@ -8,7 +8,11 @@ Be creative! do whatever you want!
 - Import things from your .base module
 """
 
-
+from PyQt5.QtWidgets import (
+    QApplication
+)
+import sys
+from .base import Window
 def main():  # pragma: no cover
     """
     The main function executes on commands:
@@ -26,3 +30,7 @@ def main():  # pragma: no cover
         * Run an application (Flask, FastAPI, Django, etc.)
     """
     print("This will do something")
+    app = QApplication(sys.argv)
+    win = Window()
+    win.show()
+    sys.exit(app.exec())
