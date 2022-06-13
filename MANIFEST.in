@@ -1,5 +1,6 @@
 include LICENSE
 include HISTORY.md
-include Containerfile
+include pept_gui/ui
+include pept_gui/ui/*
 graft tests
 graft pept_gui

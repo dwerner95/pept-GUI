@@ -38,6 +38,9 @@ setup(
     long_description_content_type="text/markdown",
     author="dwerner95",
     packages=find_packages(exclude=["tests", ".github"]),
+    #package_dir={"": "pept_gui"},
+    package_data={"ui": ["*.ui"]},
+    include_package_data=True,
     install_requires=read_requirements("requirements.txt"),
     entry_points={
         "console_scripts": ["pept_gui = pept_gui.__main__:main"]
