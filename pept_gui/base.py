@@ -244,6 +244,17 @@ class Window(QMainWindow, Ui_MainWindow):
             )
             self.pipeline_header = {"f": "pept.scanners.adac_forte", "kwargs": {file}}
             self.UpdateButton.setEnabled(True)
+        
+        if file.endswith(".csv"):
+            # load data with pept.csv
+            print("Loading Files. This may take a while...")
+            self.lors = pept.LineData(pept.read_csv(
+                file,
+            ))
+            self.pipeline_header = {"f": "pept.read_csv", "kwargs": {file}}
+            self.UpdateButton.setEnabled(True)
+
+
         else:
             # Rais e a not implemented errror
             raise NotImplementedError("Other file formats not implemented")
