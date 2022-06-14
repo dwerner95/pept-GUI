@@ -248,9 +248,9 @@ class Window(QMainWindow, Ui_MainWindow):
         if file.endswith(".csv"):
             # load data with pept.csv
             print("Loading Files. This may take a while...")
-            self.lors = pept.read_csv(
+            self.lors = pept.LineData(pept.read_csv(
                 file,
-            )
+            ))
             self.pipeline_header = {"f": "pept.read_csv", "kwargs": {file}}
             self.UpdateButton.setEnabled(True)
 
