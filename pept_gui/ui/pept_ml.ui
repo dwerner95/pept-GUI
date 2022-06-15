@@ -16,7 +16,7 @@
   <widget class="QPushButton" name="ok_button">
    <property name="geometry">
     <rect>
-     <x>60</x>
+     <x>30</x>
      <y>110</y>
      <width>80</width>
      <height>25</height>
@@ -29,7 +29,7 @@
   <widget class="QPushButton" name="cancel_button">
    <property name="geometry">
     <rect>
-     <x>200</x>
+     <x>230</x>
      <y>110</y>
      <width>80</width>
      <height>25</height>
@@ -73,6 +73,19 @@
    </property>
    <property name="text">
     <string>Calculate Error</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="help_button">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>110</y>
+     <width>80</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>help</string>
    </property>
   </widget>
  </widget>

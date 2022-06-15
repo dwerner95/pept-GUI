@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import (
     QApplication, QDialog, QMainWindow, QMessageBox, QFileDialog, QLabel,QTextEdit
 )
+from PyQt5.QtCore import QUrl
 import pept
 import pept.tracking as tracking
 import time
@@ -14,6 +15,7 @@ class PeptMl(QDialog):
         here = os.path.dirname(os.path.abspath(__file__))
         loadUi(os.path.join(here,"..", "ui","pept_ml.ui"), self)
         self.ok_button.clicked.connect(self.ok_button_clicked)
+        self.help_button.clicked.connect(self.help_button_clicked)
         self.cancel_button.clicked.connect(self.cancel_button_clicked)
         self.true_fraction.setText("0.5")
 
@@ -33,4 +35,9 @@ class PeptMl(QDialog):
 
     def cancel_button_clicked(self):
         print("Cancel button clicked")
+        self.close()
+
+    def help_button_clicked(self):
+        print("Help button clicked")
+        self.parent.PlotlyPlotRegion.setUrl(QUrl("https://pept.readthedocs.io/en/latest/manual/generated/pept.tracking.HDBSCAN.html?highlight=HDBscan"))
         self.close()

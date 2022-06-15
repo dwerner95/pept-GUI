@@ -97,7 +97,7 @@ class Window(QMainWindow, Ui_MainWindow):
                     QMessageBox.warning(self, "Error", f"{e}")
             # Plot the lors
             self.time_idx = int(self.time/1000 * len(self.lors))
-            self.samples_to_plot = int(self.time_step/1000 * len(self.lors))
+            self.samples_to_plot = int(self.time_step/1000 * len(self.lors))+1
             # main plotting function
             self.plot()
 
@@ -244,12 +244,13 @@ class Window(QMainWindow, Ui_MainWindow):
             )
             self.pipeline_header = {"f": "pept.scanners.adac_forte", "kwargs": {file}}
             self.UpdateButton.setEnabled(True)
-        
+
         if file.endswith(".csv"):
             # load data with pept.csv
             print("Loading Files. This may take a while...")
             self.lors = pept.LineData(pept.read_csv(
                 file,
+                **{"comment": "#"},
             ))
             self.pipeline_header = {"f": "pept.read_csv", "kwargs": {file}}
             self.UpdateButton.setEnabled(True)
@@ -290,9 +291,6 @@ class Window(QMainWindow, Ui_MainWindow):
             else:
                 self.pept_pipeline[module]["update"] = update_from_now
         for module in self.pipeline_execution_order:
-            print(module)
-            print(self.pept_pipeline[module])
-            print(self.update_pipeline)
             if self.pept_pipeline[module]["skip"]:
                 if module == item:
                     break
@@ -304,8 +302,8 @@ class Window(QMainWindow, Ui_MainWindow):
                 continue
             func = self.pept_pipeline[module]["function"]
             kwargs = self.pept_pipeline[module]["kwargs"]
-            print(func, kwargs)
             data=func(**kwargs).fit(data)
+            self.textBrowser.setText(f"{module}: \n{data}")
             self.old_data[module] = data
             self.pept_pipeline[module]["update"] = False
             if module == item:
