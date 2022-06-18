@@ -8,11 +8,13 @@ Be creative! do whatever you want!
 - Import things from your .base module
 """
 
-from PyQt5.QtWidgets import (
-    QApplication
-)
 import sys
+
+from PyQt5.QtWidgets import QApplication
+
 from .base import Window
+
+
 def main():  # pragma: no cover
     """
     The main function executes on commands:

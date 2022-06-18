@@ -16,28 +16,29 @@ and then choose `flask` as template.
 # example constant variable
 NAME = "pept_gui"
 import sys
-from tkinter import dialog
-import plotly
-import time
 import pept
-import pept.tracking as tracking
-from plotly.graph_objects import Figure, Scatter
-import numpy as np
-from PyQt5.QtWidgets import (
-    QApplication, QDialog, QMainWindow, QMessageBox, QFileDialog, QLabel,QTextEdit, QCheckBox
-)
-from PyQt5.uic import loadUi
+import plotly
 from PyQt5 import QtCore
+from PyQt5.QtWidgets import (
+    QApplication,
+    QCheckBox,
+    QDialog,
+    QFileDialog,
+    QLabel,
+    QMainWindow,
+    QMessageBox,
+    QTextEdit,
+)
 
 # own modules
 from .main_ui import Ui_MainWindow
 from .pept_editor_ui import Ui_Dialog
-from .subclasses.peptml import PeptMl
 from .subclasses.birmingham import Birmingham
-from .subclasses.cutpoints import Cutpoints
 from .subclasses.condition import Condition
-from .subclasses.segregate import Segregate
+from .subclasses.cutpoints import Cutpoints
 from .subclasses.interpolate import Interpolate
+from .subclasses.peptml import PeptMl
+from .subclasses.segregate import Segregate
 
 
 class Window(QMainWindow, Ui_MainWindow):
@@ -46,10 +47,10 @@ class Window(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.custom_setup()
         self.connectSignalsSlots()
-        self.pept_pipeline ={}
-        self.pipeline_header={}
+        self.pept_pipeline = {}
+        self.pipeline_header = {}
         self.pipeline_execution_order = []
-        self.old_data={}
+        self.old_data = {}
         self.sample_size = None
         self.overlap = None
         self.time = None
@@ -62,7 +63,6 @@ class Window(QMainWindow, Ui_MainWindow):
         if len(sys.argv) > 1:
             self.load_file(sys.argv[1])
 
-
     def custom_setup(self):
         self.UpdateButton.clicked.connect(self.update_button_clicked)
         self.textBrowser.setText("Hello World")
@@ -74,33 +74,39 @@ class Window(QMainWindow, Ui_MainWindow):
     def update_button_clicked(self):
         print("Update button clicked")
         # read in boxes
-        if self.time != self.TimeSelector.value() or self.time_step != self.TimeSizeSelector.value():
+        if (
+            self.time != self.TimeSelector.value()
+            or self.time_step != self.TimeSizeSelector.value()
+        ):
             self.time = self.TimeSelector.value()
             self.time_step = self.TimeSizeSelector.value()
             self.update_pipeline = True
         # check if sample size and overlap have been changed. if so update them and set first element in pipeline to update
-        if self.sample_size != float(self.SampleSize.toPlainText()) or self.overlap != float(self.Overlap.toPlainText()):
-            self.sample_size=float(self.SampleSize.toPlainText())
+        if self.sample_size != float(
+            self.SampleSize.toPlainText()
+        ) or self.overlap != float(self.Overlap.toPlainText()):
+            self.sample_size = float(self.SampleSize.toPlainText())
             self.overlap = float(self.Overlap.toPlainText())
             self.update_pipeline = True
         self.maxtracer = float(self.MaxTracer.toPlainText())
         # update the lor instance if it exists
         if self.lors is not None:
             try:
-                self.lors.sample_size = int( self.sample_size)
+                self.lors.sample_size = int(self.sample_size)
                 self.lors.overlap = int(self.overlap)
             except ValueError as e:
                 try:
                     self.lors.overlap = int(self.overlap)
-                    self.lors.sample_size = int( self.sample_size)
+                    self.lors.sample_size = int(self.sample_size)
                 except ValueError as e:
                     QMessageBox.warning(self, "Error", f"{e}")
             # Plot the lors
-            self.time_idx = int(self.time/1000 * len(self.lors))
-            self.samples_to_plot = int(self.time_step/1000 * len(self.lors))+1
+            self.time_idx = int(self.time / 1000 * len(self.lors))
+            self.samples_to_plot = (
+                int(self.time_step / 1000 * len(self.lors)) + 1
+            )
             # main plotting function
             self.plot()
-
 
     def connectSignalsSlots(self):
         self.actionCutpoints.triggered.connect(self.cutpoints)
@@ -111,13 +117,14 @@ class Window(QMainWindow, Ui_MainWindow):
         self.actionInterpolate.triggered.connect(self.interpolate)
         self.action_export.triggered.connect(self.export)
         self.Load.triggered.connect(self.load_file)
-        self.module_list.itemDoubleClicked.connect(self.module_list_item_doubleclicked)
+        self.module_list.itemDoubleClicked.connect(
+            self.module_list_item_doubleclicked
+        )
         self.module_list.itemClicked.connect(self.module_list_item_clicked)
         pass
-        #self.action_Exit.triggered.connect(self.close)
-        #self.action_Find_Replace.triggered.connect(self.findAndReplace)
-        #self.action_About.triggered.connect(self.about)
-
+        # self.action_Exit.triggered.connect(self.close)
+        # self.action_Find_Replace.triggered.connect(self.findAndReplace)
+        # self.action_About.triggered.connect(self.about)
 
     def peptml(self):
         print("PeptML")
@@ -157,7 +164,9 @@ class Window(QMainWindow, Ui_MainWindow):
 
     def export(self):
         print("Export")
-        file_name = QFileDialog.getSaveFileName(self, "Save File", "", "Text Files (*.py)")
+        file_name = QFileDialog.getSaveFileName(
+            self, "Save File", "", "Text Files (*.py)"
+        )
         if file_name[0] != "":
             with open(file_name[0], "w") as f:
                 f.write("import pept\n")
@@ -171,16 +180,25 @@ class Window(QMainWindow, Ui_MainWindow):
                 f.write(f"lors.overlap = {int(self.overlap)}\n")
                 f.write(f"pipeline = pept.Pipeline([\n ")
                 for module in self.pipeline_execution_order:
-                    if self.pept_pipeline[module]['name'] == "tracking.Condition":
-                        f.write(f"    {self.pept_pipeline[module]['name']}('{self.pept_pipeline[module]['kwargs']['cond']}'),\n")
+                    if (
+                        self.pept_pipeline[module]["name"]
+                        == "tracking.Condition"
+                    ):
+                        f.write(
+                            f"    {self.pept_pipeline[module]['name']}('{self.pept_pipeline[module]['kwargs']['cond']}'),\n"
+                        )
                     else:
-                        f.write(f"    {self.pept_pipeline[module]['name']}(**{self.pept_pipeline[module]['kwargs']}),\n")
+                        f.write(
+                            f"    {self.pept_pipeline[module]['name']}(**{self.pept_pipeline[module]['kwargs']}),\n"
+                        )
                 f.write("tracking.Stack(),])\n")
                 f.write("points = pipeline.fit(lors)\n")
                 f.write("# Save points after this!")
-            QMessageBox.information(self, "Success", f"Script saved to {file_name[0]}\n Please edit the script to save the positions!")
-
-
+            QMessageBox.information(
+                self,
+                "Success",
+                f"Script saved to {file_name[0]}\n Please edit the script to save the positions!",
+            )
 
     def print_dict(self):
         self.textBrowser.setText(f"{self.pept_pipeline}")
@@ -191,7 +209,9 @@ class Window(QMainWindow, Ui_MainWindow):
             return
         if plot_2d:
             if self.plot_item == "lors":
-                QMessageBox.warning(self, "Error", "You can not plot LORs in 2D")
+                QMessageBox.warning(
+                    self, "Error", "You can not plot LORs in 2D"
+                )
             else:
                 self.run_to(self.plot_item)
                 self.plot_points2d()
@@ -204,36 +224,45 @@ class Window(QMainWindow, Ui_MainWindow):
 
         pass
 
-
     def plot_lors(self):
         # Plot the lors
-        fig = pept.plots.PlotlyGrapher().add_lines(self.lors[int(self.time_idx)]).fig
-        html = '<html><body>'
-        html += plotly.offline.plot(fig, output_type='div', include_plotlyjs='cdn')
-        html += '</body></html>'
+        fig = (
+            pept.plots.PlotlyGrapher()
+            .add_lines(self.lors[int(self.time_idx)])
+            .fig
+        )
+        html = "<html><body>"
+        html += plotly.offline.plot(
+            fig, output_type="div", include_plotlyjs="cdn"
+        )
+        html += "</body></html>"
         self.PlotlyPlotRegion.setHtml(html)
 
     def plot_points2d(self):
         # Plot the lors
 
         fig = pept.plots.PlotlyGrapher2D().add_timeseries(self.points).fig
-        html = '<html><body>'
-        html += plotly.offline.plot(fig, output_type='div', include_plotlyjs='cdn')
-        html += '</body></html>'
+        html = "<html><body>"
+        html += plotly.offline.plot(
+            fig, output_type="div", include_plotlyjs="cdn"
+        )
+        html += "</body></html>"
         self.PlotlyPlotRegion.setHtml(html)
 
     def plot_points3d(self):
         # Plot the lors
         fig = pept.plots.PlotlyGrapher().add_points(self.points).fig
-        html = '<html><body>'
-        html += plotly.offline.plot(fig, output_type='div', include_plotlyjs='cdn')
-        html += '</body></html>'
+        html = "<html><body>"
+        html += plotly.offline.plot(
+            fig, output_type="div", include_plotlyjs="cdn"
+        )
+        html += "</body></html>"
         self.PlotlyPlotRegion.setHtml(html)
 
-    def load_file(self,filename =None):
+    def load_file(self, filename=None):
         print(filename)
         if type(filename) != str:
-            file =QFileDialog.getOpenFileName(self, 'Open file', '')[0]
+            file = QFileDialog.getOpenFileName(self, "Open file", "")[0]
         else:
             file = filename
         if file.endswith(".da01"):
@@ -242,19 +271,23 @@ class Window(QMainWindow, Ui_MainWindow):
             self.lors = pept.scanners.adac_forte(
                 file,
             )
-            self.pipeline_header = {"f": "pept.scanners.adac_forte", "kwargs": {file}}
+            self.pipeline_header = {
+                "f": "pept.scanners.adac_forte",
+                "kwargs": {file},
+            }
             self.UpdateButton.setEnabled(True)
 
         if file.endswith(".csv"):
             # load data with pept.csv
             print("Loading Files. This may take a while...")
-            self.lors = pept.LineData(pept.read_csv(
-                file,
-                **{"comment": "#"},
-            ))
+            self.lors = pept.LineData(
+                pept.read_csv(
+                    file,
+                    **{"comment": "#"},
+                )
+            )
             self.pipeline_header = {"f": "pept.read_csv", "kwargs": {file}}
             self.UpdateButton.setEnabled(True)
-
 
         else:
             # Rais e a not implemented errror
@@ -268,7 +301,7 @@ class Window(QMainWindow, Ui_MainWindow):
         self.print_dict()
 
     def module_list_item_clicked(self, item):
-        self.plot_item =  item.text()
+        self.plot_item = item.text()
         self.print_dict()
 
     """
@@ -276,17 +309,23 @@ class Window(QMainWindow, Ui_MainWindow):
     runs the pipeline to the given item
     if there was no update, self.points will be updated to the items previous output
     """
+
     def run_to(self, item):
         if item not in self.pipeline_execution_order:
-            QMessageBox.warning(self, "Error", f"{item} is not in the pipeline")
+            QMessageBox.warning(
+                self, "Error", f"{item} is not in the pipeline"
+            )
             return
-        data = self.lors[self.time_idx:self.time_idx+self.samples_to_plot]
+        data = self.lors[self.time_idx : self.time_idx + self.samples_to_plot]
         # run --> a variable determining if there was an update in the previous pipeline
         update_from_now = False
         for module in self.pipeline_execution_order:
             if self.update_pipeline:
                 self.pept_pipeline[module]["update"] = True
-            elif self.pept_pipeline[module]["update"] == True and not self.pept_pipeline[module]["skip"] == True:
+            elif (
+                self.pept_pipeline[module]["update"] == True
+                and not self.pept_pipeline[module]["skip"] == True
+            ):
                 update_from_now = True
             else:
                 self.pept_pipeline[module]["update"] = update_from_now
@@ -302,7 +341,7 @@ class Window(QMainWindow, Ui_MainWindow):
                 continue
             func = self.pept_pipeline[module]["function"]
             kwargs = self.pept_pipeline[module]["kwargs"]
-            data=func(**kwargs).fit(data)
+            data = func(**kwargs).fit(data)
             self.textBrowser.setText(f"{module}: \n{data}")
             self.old_data[module] = data
             self.pept_pipeline[module]["update"] = False
@@ -311,6 +350,8 @@ class Window(QMainWindow, Ui_MainWindow):
 
         self.update_pipeline = False
         self.points = data
+
+
 class PeptEditor(QDialog, Ui_Dialog):
     def __init__(self, parent=None, function=None):
         super().__init__(parent)
@@ -326,7 +367,7 @@ class PeptEditor(QDialog, Ui_Dialog):
             if self.parent.pept_pipeline[function]["skip"]:
                 self.pause.setText("Resume")
             pos = 30
-            self.label =[]
+            self.label = []
             self.textEdit = []
             for id_, data in enumerate(kwargs.items()):
                 key, value = data
@@ -343,34 +384,59 @@ class PeptEditor(QDialog, Ui_Dialog):
                 self.textEdit[-1].setGeometry(QtCore.QRect(180, pos, 141, 31))
                 self.textEdit[-1].setObjectName(f"textEdit_{id_}")
 
-                pos +=40
+                pos += 40
 
     def ok_button_clicked(self):
         print("Ok button clicked")
-        #self.parent.pept_pipeline[self.function]["kwargs"] = {}
+        # self.parent.pept_pipeline[self.function]["kwargs"] = {}
         update = False
         for id_, data in enumerate(self.textEdit):
             # check if the new and old one are the same
             print(self.parent.pept_pipeline[self.function]["kwargs"])
             if self.label[id_].text() == "cond":
-                if self.parent.pept_pipeline[self.function]["kwargs"][self.label[id_].text()] != data.toPlainText():
-                    self.parent.pept_pipeline[self.function]["kwargs"][self.label[id_].text()] = data.toPlainText()
+                if (
+                    self.parent.pept_pipeline[self.function]["kwargs"][
+                        self.label[id_].text()
+                    ]
+                    != data.toPlainText()
+                ):
+                    self.parent.pept_pipeline[self.function]["kwargs"][
+                        self.label[id_].text()
+                    ] = data.toPlainText()
                     update = True
             elif self.label[id_].text() == "error":
-                statement=data.isChecked()
-                if self.parent.pept_pipeline[self.function]["kwargs"][self.label[id_].text()] != statement:
-                    self.parent.pept_pipeline[self.function]["kwargs"][self.label[id_].text()] = statement
+                statement = data.isChecked()
+                if (
+                    self.parent.pept_pipeline[self.function]["kwargs"][
+                        self.label[id_].text()
+                    ]
+                    != statement
+                ):
+                    self.parent.pept_pipeline[self.function]["kwargs"][
+                        self.label[id_].text()
+                    ] = statement
                     update = True
             else:
-                if self.parent.pept_pipeline[self.function]["kwargs"][self.label[id_].text()] != float(data.toPlainText()):
-                    self.parent.pept_pipeline[self.function]["kwargs"][self.label[id_].text()] = float(data.toPlainText())
+                if self.parent.pept_pipeline[self.function]["kwargs"][
+                    self.label[id_].text()
+                ] != float(data.toPlainText()):
+                    self.parent.pept_pipeline[self.function]["kwargs"][
+                        self.label[id_].text()
+                    ] = float(data.toPlainText())
                     update = True
         if not self.parent.pept_pipeline[self.function]["update"]:
-            self.parent.pept_pipeline[self.function]["update"]= update
+            self.parent.pept_pipeline[self.function]["update"] = update
         # check if the checkboxes are ticked
-        if self.checkplot_after.isChecked() and self.checkplot_before.isChecked():
+        if (
+            self.checkplot_after.isChecked()
+            and self.checkplot_before.isChecked()
+        ):
             # message that this is not possible
-            QMessageBox.warning(self, "Error", "You cannot plot both before and after the function")
+            QMessageBox.warning(
+                self,
+                "Error",
+                "You cannot plot both before and after the function",
+            )
         elif self.checkplot_after.isChecked():
             # find id self.function in the pipeline_execution_order list
             id_ = self.parent.pipeline_execution_order.index(self.function)
@@ -382,7 +448,9 @@ class PeptEditor(QDialog, Ui_Dialog):
                 self.parent.plot_item = "lors"
 
             else:
-                self.parent.plot_item = self.parent.pipeline_execution_order[id_-1]
+                self.parent.plot_item = self.parent.pipeline_execution_order[
+                    id_ - 1
+                ]
         else:
             # dont change the current plot if it is not wanted
 
@@ -407,7 +475,7 @@ class PeptEditor(QDialog, Ui_Dialog):
 
     def pause_button_clicked(self):
         print("Pause button clicked")
-        self.parent.pept_pipeline[self.function]["update"]= True
+        self.parent.pept_pipeline[self.function]["update"] = True
         if self.pause.text() == "Pause":
             self.pause.setText("Resume")
             self.parent.pept_pipeline[self.function]["skip"] = True
@@ -415,6 +483,7 @@ class PeptEditor(QDialog, Ui_Dialog):
         else:
             self.pause.setText("Pause")
             self.parent.pept_pipeline[self.function]["skip"] = False
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

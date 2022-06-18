@@ -35,7 +35,6 @@ class Ui_Dialog(object):
         self.checkplot_after.setGeometry(QtCore.QRect(200, 210, 111, 23))
         self.checkplot_after.setObjectName("checkplot_after")
 
-
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
@@ -48,4 +47,3 @@ class Ui_Dialog(object):
         self.pause.setText(_translate("Dialog", "Pause"))
         self.checkplot_before.setText(_translate("Dialog", "Plot before"))
         self.checkplot_after.setText(_translate("Dialog", "Plot after"))
-

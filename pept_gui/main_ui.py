@@ -18,7 +18,9 @@ class Ui_MainWindow(object):
         MainWindow.setMouseTracking(False)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.PlotlyPlotRegion = QtWebEngineWidgets.QWebEngineView(self.centralwidget)
+        self.PlotlyPlotRegion = QtWebEngineWidgets.QWebEngineView(
+            self.centralwidget
+        )
         self.PlotlyPlotRegion.setGeometry(QtCore.QRect(10, 10, 551, 381))
         self.PlotlyPlotRegion.setUrl(QtCore.QUrl("about:blank"))
         self.PlotlyPlotRegion.setObjectName("PlotlyPlotRegion")
@@ -174,7 +176,9 @@ class Ui_MainWindow(object):
         self.label_5.setText(_translate("MainWindow", "Overlap"))
         self.UpdateButton.setText(_translate("MainWindow", "Update"))
         self.checkBox_x.setText(_translate("MainWindow", "x"))
-        self.label_6.setText(_translate("MainWindow", "Choose preview dimensions"))
+        self.label_6.setText(
+            _translate("MainWindow", "Choose preview dimensions")
+        )
         self.checkBox_y.setText(_translate("MainWindow", "y"))
         self.checkBox_z.setText(_translate("MainWindow", "z"))
         self.checkBox_2d.setText(_translate("MainWindow", "2D"))
@@ -190,19 +194,39 @@ class Ui_MainWindow(object):
         self.action_Settings.setToolTip(_translate("MainWindow", "Settings "))
         self.action_export.setText(_translate("MainWindow", "&Export"))
         self.actionCondition.setText(_translate("MainWindow", "Condition"))
-        self.actionCondition.setToolTip(_translate("MainWindow", "Add a condition"))
+        self.actionCondition.setToolTip(
+            _translate("MainWindow", "Add a condition")
+        )
         self.actionPeptML.setText(_translate("MainWindow", "PeptML"))
-        self.actionPeptML.setToolTip(_translate("MainWindow", "Add a pass of PEPT-ML clustering"))
+        self.actionPeptML.setToolTip(
+            _translate("MainWindow", "Add a pass of PEPT-ML clustering")
+        )
         self.actionCutpoints.setText(_translate("MainWindow", "Cutpoints"))
-        self.actionCutpoints.setToolTip(_translate("MainWindow", "Calculate Cutpoints from LORs"))
-        self.actionBirmingham_Method.setText(_translate("MainWindow", "Birmingham Method"))
-        self.actionBirmingham_Method.setToolTip(_translate("MainWindow", "Add the birmingham method"))
+        self.actionCutpoints.setToolTip(
+            _translate("MainWindow", "Calculate Cutpoints from LORs")
+        )
+        self.actionBirmingham_Method.setText(
+            _translate("MainWindow", "Birmingham Method")
+        )
+        self.actionBirmingham_Method.setToolTip(
+            _translate("MainWindow", "Add the birmingham method")
+        )
         self.actionSegregate.setText(_translate("MainWindow", "Segregate"))
-        self.actionSegregate.setToolTip(_translate("MainWindow", "Segregate the Traces"))
+        self.actionSegregate.setToolTip(
+            _translate("MainWindow", "Segregate the Traces")
+        )
         self.actionInterpolate.setText(_translate("MainWindow", "Interpolate"))
-        self.actionInterpolate.setToolTip(_translate("MainWindow", "Interpolate traces"))
+        self.actionInterpolate.setToolTip(
+            _translate("MainWindow", "Interpolate traces")
+        )
         self.actionVelocity.setText(_translate("MainWindow", "Velocity"))
-        self.actionVelocity.setToolTip(_translate("MainWindow", "Calculate the Velocity"))
+        self.actionVelocity.setToolTip(
+            _translate("MainWindow", "Calculate the Velocity")
+        )
         self.actionLazyPeptml.setText(_translate("MainWindow", "Lazy PeptML"))
-        self.actionLazyPeptml.setToolTip(_translate("MainWindow", "Add a full PEPT-ML pipeline"))
+        self.actionLazyPeptml.setToolTip(
+            _translate("MainWindow", "Add a full PEPT-ML pipeline")
+        )
+
+
 from PyQt5 import QtWebEngineWidgets
