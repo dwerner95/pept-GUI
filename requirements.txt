@@ -7,5 +7,4 @@ pyqt5
 plotly
 numpy
 pandas
-time
 pept
