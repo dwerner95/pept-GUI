@@ -1,6 +1,7 @@
 # This requirements are for development and testing only, not for production.
 pytest
 pyqt5
+pyqtwebengine
 pytest-qt
 coverage
 flake8
