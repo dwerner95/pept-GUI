@@ -20,3 +20,20 @@ $ python3 -m pept_gui
 ## Development
 
 Read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+
+
+## To Do
+  -  include saving options in exported pept pipeline script
+  -  Velocity button
+  -  CI Testing
+### New Features
+ - save figures as HTML
+ - change color of figure
+ - export data at given point as csv or txt or whatever
+ - resize the window properly
+ - import pept pipeline from file
+ - Partial file reading
+   - Include more reading options
+-  Welcome screen ?
+-  include GUI idea from Leonard
+-  make system command --> pept opens gui
