@@ -277,7 +277,7 @@ class Window(QMainWindow, Ui_MainWindow):
             }
             self.UpdateButton.setEnabled(True)
 
-        if file.endswith(".csv"):
+        elif file.endswith(".csv"):
             # load data with pept.csv
             print("Loading Files. This may take a while...")
             self.lors = pept.LineData(
